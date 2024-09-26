@@ -35,6 +35,7 @@ const io = new Server(server, {
     cors: corsOptions,
 });
 
+
 createConnectionToDataBase()
 setSocket(io);
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
