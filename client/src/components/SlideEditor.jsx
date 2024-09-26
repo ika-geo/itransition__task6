@@ -23,32 +23,32 @@ const SlideEditor = ({presentation, selectedSlide}) => {
 
             <p className="text-sm text-gray-600">Slide {selectedSlide+1} of {presentation.slides.length}</p>
 
-            {/*{*/}
-            {/*    presentation?.slides.length ?*/}
+            {
+                presentation?.slides.length ?
 
-            {/*        <>*/}
-            {/*            {*/}
-            {/*                !editMode && <button onClick={handleSetEditMode}>Edit slide</button>*/}
-            {/*            }*/}
+                    <>
+                        {
+                            !editMode && <button onClick={handleSetEditMode}>Edit slide</button>
+                        }
 
 
-            {/*            {*/}
-            {/*                editMode &&*/}
-            {/*                <EditorBlock*/}
-            {/*                    presentation={presentation}*/}
-            {/*                    selectedSlide={selectedSlide}*/}
-            {/*                    setEditMode={setEditMode}*/}
-            {/*                />*/}
-            {/*            }*/}
+                        {
+                            editMode &&
+                            <EditorBlock
+                                presentation={presentation}
+                                selectedSlide={selectedSlide}
+                                setEditMode={setEditMode}
+                            />
+                        }
 
-            {/*            <div>*/}
-            {/*                <p>{presentation.slides[selectedSlide].content}</p>*/}
-            {/*            </div>*/}
-            {/*        </>*/}
+                        <div>
+                            <p>{presentation.slides[selectedSlide].content}</p>
+                        </div>
+                    </>
 
-            {/*        : null*/}
+                    : null
 
-            {/*}*/}
+            }
         </div>
     );
 };

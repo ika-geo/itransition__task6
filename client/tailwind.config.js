@@ -8,6 +8,8 @@ export default {
     extend: {
       colors: {
         primary: '#22c55e',
+        primaryBG: 'rgba(34,197,94,0.2)',
+        alter: 'rgb(239 68 68)' ,
       }
     },
   },

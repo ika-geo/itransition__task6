@@ -19,5 +19,9 @@ input[type="text"]{
 }
 
 button{
-    @apply bg-primary p-2 text-white cursor-pointer hover:opacity-60
+    @apply bg-primary p-2 border-2 rounded-md border-primary text-white cursor-pointer hover:opacity-60
+}
+
+.alterBtn{
+    @apply bg-alter p-2 border-2 border-alter text-white cursor-pointer hover:opacity-60
 }

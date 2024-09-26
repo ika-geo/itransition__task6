@@ -24,10 +24,6 @@ const EditorBlock = ({presentation, selectedSlide, setEditMode}) => {
         }))
     }
 
-    // "slideId":"66f18a857bf0278b4ad4a979",
-    // "content":"this is also another slide"
-
-
     return (
         <div>
             <input type='text' value={content} onChange={e => handleEditorChange(e.target.value)}></input>

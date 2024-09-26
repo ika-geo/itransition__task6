@@ -1,17 +1,31 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Link, Outlet} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
 import {logOut} from "../store/features/UserSlice.js";
+import io from "socket.io-client";
 
 
 const Header = () => {
 
     const dispatch = useDispatch()
     const user = useSelector(state=>state.user.name)
+    const [socket, setSocket] = useState(null)
+
+    useEffect(() => {
+        const newSocket = io(import.meta.env.VITE_SERVER_SOCKET_URL); // Replace with your server URL
+        setSocket(newSocket);
+        if (socket){
+            return () => {
+                socket.off('refreshPresentation', user, presentation._id);
+            };
+        }
+
+    }, []);
 
     const handleLogOut = ()=>{
         dispatch(logOut())
     }
+
 
     return (
         <div>
@@ -20,7 +34,7 @@ const Header = () => {
                     <Link className="text-2xl" to='/'>Presentations</Link>
                     <div className="flex items-center">
                         <span className="text-2xl mr-4">{user}</span>
-                        <button onClick={handleLogOut} className="bg-red-500 p-2 rounded-lg text-white">Logout</button>
+                        <button onClick={handleLogOut} className="alterBtn">Logout</button>
                     </div>
                 </div>
 

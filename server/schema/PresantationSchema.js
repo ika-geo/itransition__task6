@@ -6,11 +6,7 @@ const PresentationSchema  = new Schema({
     allowEdit: { type: Boolean, default: true },
     blackListUsers: [{ type: String , default:[]}],
     activeUsers: [{ type: String, default:[]}],
-    slides: [
-        {
-            content: { type: String, default: '' }
-        }
-    ]
+    slides: [{ type: [], default: [] }]
 }, { timestamps: true });
 
 module.exports = model('Presentation', PresentationSchema)

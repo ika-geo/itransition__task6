@@ -31,8 +31,6 @@ const HomePage = () => {
                         key={presentation._id}
                         presentation={presentation}
                     />
-
-
                 ))}
             </div>
         </div>

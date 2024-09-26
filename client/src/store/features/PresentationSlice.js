@@ -31,6 +31,15 @@ export const getPresentationById = createAsyncThunk('presentation/getPresentatio
     }
 });
 
+export const getPresentationByIdForSocket = createAsyncThunk('presentation/getPresentationByIdForSocket', async (presentationId) => {
+    try {
+        const response = await axios.get(presentationUrl+"/"+presentationId);
+        return response.data;
+    } catch (error) {
+        return error
+    }
+});
+
 export const createPresentaion = createAsyncThunk('presentation/createPresentaion', async (data) => {
     try {
         const response = await axios.post(presentationUrl, data);
@@ -118,6 +127,12 @@ export const PresentationSlice = createSlice({
                 handleErrorMessage(action, "Can't get presentation")
             })
 
+            .addCase(getPresentationByIdForSocket.fulfilled, (state, action) => {
+                state.selectedPresentation = action.payload
+            })
+            .addCase(getPresentationByIdForSocket.rejected, (state, action) => {
+                handleErrorMessage(action, "Can't update presentation")
+            })
 
             .addCase(addSlide.rejected, (state, action) => {
                 handleErrorMessage(action, "Can't add slide")

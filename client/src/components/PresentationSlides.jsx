@@ -1,46 +1,63 @@
-import React from 'react';
-import {addSlide, deleteSlide, setSelectedSlide} from "../store/features/PresentationSlice.js";
-import {useDispatch} from "react-redux";
+import React, {useEffect} from 'react';
+import {setSelectedSlide} from "../store/features/PresentationSlice.js";
+import {useDispatch, useSelector} from "react-redux";
 
-const PresentationSlides = ({presentation, selectedSlide}) => {
-
+const PresentationSlides = ({presentation, selectedSlide, socket, handlegetPresentationByIdForSocket}) => {
+    const user = useSelector(state=>state.user.name)
     const dispatch = useDispatch()
+
+    useEffect(() => {
+        if (socket){
+            socket.on('refreshPresentation', handlegetPresentationByIdForSocket);
+            return () => {
+                socket.off('refreshPresentation');
+            };
+        }
+    }, []);
+
     const handleChangeSlide = (id) => {
         dispatch(setSelectedSlide(id))
     }
 
-    const handleDeleteSlide = (slideId, id) => {
-        if (id === selectedSlide) {
-            dispatch(setSelectedSlide(0))
+    const handleDeleteSlide = () => {
+        if (socket){
+            socket.emit("deletePresentationSlide", presentation._id, selectedSlide)
         }
-        dispatch(deleteSlide({
-            presentationId: presentation._id,
-            slideId: slideId
-        }))
-        //handle websocket here
     }
 
     const handleAddSlide = () => {
-        dispatch(addSlide(presentation._id))
+        if (socket){
+            socket.emit("addPresentationSlide", presentation._id)
+        }
     }
 
     return (
         <>
-            {presentation?.slides.map((slide, id) => {
+            {presentation.slides.map((slide, id) => {
                 return (
-                    <button
+                    <div
                         key={slide._id}
-                        onClick={() => handleChangeSlide(id)}
-                        className={'text-black w-full flex justify-between gap-x-2 bg-white p-4 mb-4 rounded-lg shadow-md border-[1px] border-gray-100 ' + (selectedSlide === id ? "bg-green-100" : "")}>
-                        <h2>Slide {id + 1}</h2>
-                        <button onClick={() => handleDeleteSlide(slide._id, id)}
-                                className='bg-red-500'>Delete
-                        </button>
+                        className={'text-black w-full flex justify-between gap-x-2 p-4 mb-4 rounded-lg shadow-md border-[1px] border-gray-100 ' + (selectedSlide === id ? "bg-primaryBG" : "")}>
 
-                    </button>
+                        <button
+                            onClick={() => handleChangeSlide(id)}
+                            className='bg-transparent w-full text-black'>
+                            Slide {id + 1}</button>
+
+                        {user===presentation.author &&
+                            <button onClick={() => handleDeleteSlide(slide._id, id)}
+                                    className='alterBtn'>Delete
+                            </button>
+                        }
+
+
+                    </div>
                 )
             })}
-            <button onClick={handleAddSlide}>Add slide</button>
+            {user === presentation.author &&
+                < button onClick={handleAddSlide}>Add slide</button>
+            }
+
         </>
 
 

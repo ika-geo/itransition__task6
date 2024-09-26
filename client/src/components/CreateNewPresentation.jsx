@@ -72,7 +72,7 @@ const CreateNewPresentation = () => {
                             <div className="flex justify-between mt-6">
                                 <button
                                     onClick={handleCLoseEditBlock}
-                                    type="button" className="bg-red-500 text-white p-2 rounded-lg mr-2">Cancel
+                                    type="button" className="alterBtn">Cancel
                                 </button>
 
                                 <button
