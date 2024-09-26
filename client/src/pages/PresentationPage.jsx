@@ -25,7 +25,10 @@ const PresentationPage = () => {
     useEffect(() => {
         dispatch(setSelectedSlide(0))
         dispatch(getPresentationById(id))
-        const newSocket = io(import.meta.env.VITE_SERVER_SOCKET_URL); // Replace with your server URL
+        const newSocket = io(import.meta.env.VITE_SERVER_SOCKET_URL,{
+            withCredentials: true,
+            transports: ['websocket', 'polling'], // You can specify transports
+        });
         setSocket(newSocket);
     }, []);
 

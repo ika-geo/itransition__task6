@@ -31,11 +31,7 @@ const server = http.createServer(app);
 
 // Set up Socket.io
 const io = new Server(server, {
-    cors: {
-        origin: "https://itransition-task6-sigma.vercel.app",
-        methods: ["GET", "POST"],
-        credentials: true,
-    },
+    cors: corsOptions,
 });
 
 createConnectionToDataBase()
