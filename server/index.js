@@ -32,11 +32,7 @@ const server = http.createServer(app);
 
 // Set up Socket.io
 const io = new Server(server, {
-    cors: {
-        origin: "https://itransition-task6-client-pc91u7sjy-ikas-projects.vercel.app",
-        methods: ["GET", "POST"],
-        credentials: true,
-    },
+    cors: corsOptions,
     path: "/socket.io/",
 });
 
