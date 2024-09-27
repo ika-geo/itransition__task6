@@ -1,33 +1,33 @@
-import React, {useEffect, useState} from 'react';
-import {editPresentationSlide} from "../store/features/PresentationSlice.js";
-import {useDispatch} from "react-redux";
+import React, { useCallback } from 'react';
+import { Excalidraw } from "@excalidraw/excalidraw";
+import debounce from 'lodash.debounce';
 
-const EditorBlock = ({presentation, selectedSlide, setEditMode}) => {
+const EditorBlock = ({ presentation, selectedSlide, slideContent, setSlideContent }) => {
 
-    const [content, setContent] = useState('')
-    const dispatch = useDispatch()
+    // Debounced function to limit how often state updates
+    const debouncedSetSlideContent = useCallback(
+        debounce((newContent) => {
+            if (JSON.stringify(slideContent) !== JSON.stringify(newContent)) {
+                setSlideContent(newContent);
+            }
+        }, 300), // Adjust delay as needed
+        [slideContent, setSlideContent]
+    );
 
-    useEffect(() => {
-        setContent(presentation?.slides[selectedSlide].content)
-    }, [presentation?.slides[selectedSlide].content]);
-
-    const handleEditorChange = (value)=>{
-        setContent(value)
-    }
-
-    const handleSaveSlider = ()=>{
-        setEditMode(false)
-        dispatch(editPresentationSlide({
-            presentationId: presentation._id,
-            slideId: presentation?.slides[selectedSlide]._id,
-            content: content,
-        }))
-    }
+    const handleChange = (elements) => {
+        debouncedSetSlideContent(elements);
+    };
 
     return (
-        <div>
-            <input type='text' value={content} onChange={e => handleEditorChange(e.target.value)}></input>
-            <button onClick={handleSaveSlider}>Save</button>
+        <div className='h-[800px] border-2'>
+            {presentation?.slides.length && selectedSlide !== undefined ? (
+                <Excalidraw
+                    onChange={handleChange}
+                    initialData={{ elements: presentation?.slides[selectedSlide] }}
+                />
+            ) : (
+                <p>Loading slide...</p>
+            )}
         </div>
     );
 };

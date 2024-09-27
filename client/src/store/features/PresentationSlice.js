@@ -76,17 +76,6 @@ export const deleteSlide = createAsyncThunk('presentation/deleteSlide', async (d
     }
 });
 
-export const editPresentationSlide = createAsyncThunk('presentation/editPresentationSlide', async (data) => {
-    try {
-        const response = await axios.put(presentationUrl+"/"+data.presentationId, {slideId:data.slideId, content:data.content});
-        return response.data
-    } catch (error) {
-        return error
-    }
-});
-
-
-
 
 export const PresentationSlice = createSlice({
     name: 'presentation',
@@ -94,6 +83,9 @@ export const PresentationSlice = createSlice({
     reducers: {
         setSelectedSlide: (state, action) => {
             state.selectedSlice = action.payload
+        },
+        editPresentationSlide: (state, action) => {
+            state.selectedPresentation.slides[state.selectedSlice] = action.payload
         }
     },
 
@@ -156,6 +148,6 @@ export const PresentationSlice = createSlice({
 
 })
 
-export const {setSelectedSlide} = PresentationSlice.actions
+export const {setSelectedSlide, editPresentationSlide} = PresentationSlice.actions
 
 export default PresentationSlice.reducer

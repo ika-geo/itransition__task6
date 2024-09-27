@@ -1,8 +1,8 @@
 import React from 'react';
 import {Link} from "react-router-dom";
-import {MdDelete} from "react-icons/md";
 import {useDispatch, useSelector} from "react-redux";
 import {deletePresentation} from "../store/features/PresentationSlice.js";
+import SlidePreview from "./SlidePreview.jsx";
 
 
 const PreviewSlideItem = ({presentation}) => {
@@ -16,24 +16,30 @@ const PreviewSlideItem = ({presentation}) => {
 
     return (
         <div className="bg-white border-[1px] border-gray-100 p-6 rounded-lg shadow-md">
+            <div className="mb-4 h-40 overflow-hidden">
+                <SlidePreview
+                    slideData={presentation?.slides[0]}
+                />
+            </div>
 
             <div className='flex justify-between gap-x-2'>
-
                 <h3 className="text-xl font-bold">{presentation.title}</h3>
                 {
-                    author===presentation.author &&
-                    <MdDelete
+                    author === presentation.author &&
+                    <button
                         onClick={handleDeletePresentation}
-                        className='text-red-500 text-3xl cursor-pointer hover:opacity-60' />
+                        className='alterBtn'
+                    >
+                        Delete
+                    </button>
                 }
 
             </div>
-
-
             <p className="text-lg text-gray-600 mb-4">Author: {presentation.author}</p>
             <Link
                 to={'/presentation/' + presentation._id}
-                className="block bg-primary text-white text-center rounded-lg p-2 w-full hover:opacity-60">Join Presentation</Link>
+                className="block bg-primary text-white text-center rounded-lg p-2 w-full hover:opacity-60">Join
+                Presentation</Link>
         </div>
 
     )
