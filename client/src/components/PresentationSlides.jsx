@@ -1,5 +1,9 @@
 import React, {useEffect} from 'react';
-import {setSelectedSlide} from "../store/features/PresentationSlice.js";
+import {
+    addPresentationSlideLocally,
+    deletePresentationSlideLocally,
+    setSelectedSlide
+} from "../store/features/PresentationSlice.js";
 import {useDispatch, useSelector} from "react-redux";
 
 const PresentationSlides = ({presentation, selectedSlide, socket, handlegetPresentationByIdForSocket}) => {
@@ -21,12 +25,14 @@ const PresentationSlides = ({presentation, selectedSlide, socket, handlegetPrese
 
     const handleDeleteSlide = () => {
         if (socket){
+            dispatch(deletePresentationSlideLocally(selectedSlide))
             socket.emit("deletePresentationSlide", presentation._id, selectedSlide)
         }
     }
 
     const handleAddSlide = () => {
         if (socket){
+            dispatch(addPresentationSlideLocally())
             socket.emit("addPresentationSlide", presentation._id)
         }
     }

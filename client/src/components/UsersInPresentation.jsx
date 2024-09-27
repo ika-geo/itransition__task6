@@ -1,5 +1,6 @@
 import React, {useEffect} from 'react';
-import {useSelector} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
+import {addUserToBlackListLocally, removeUserFromBlackListLocally} from "../store/features/PresentationSlice.js";
 
 // activeUsers
 // author
@@ -7,6 +8,8 @@ import {useSelector} from "react-redux";
 
 const UsersInPresentation = ({presentation, socket, handlegetPresentationByIdForSocket}) => {
     let user = useSelector(state => state.user.name);
+
+    let dispatch = useDispatch()
 
     useEffect(() => {
         if (presentation && socket) {
@@ -20,10 +23,12 @@ const UsersInPresentation = ({presentation, socket, handlegetPresentationByIdFor
     }, []);
 
     const handleAddUserToBlackList = (userItem) => {
+        dispatch(addUserToBlackListLocally(userItem))
         socket.emit('addUserToBlacklist', userItem, presentation._id)
     };
 
     const handleRemoveUserFromBlackList = (userItem) => {
+        dispatch(removeUserFromBlackListLocally(userItem))
         socket.emit('removeUserFromBlacklist', userItem, presentation._id)
     };
 

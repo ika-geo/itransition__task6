@@ -7,7 +7,7 @@ exports.presentationController = {
             const presentations = await PresentationSchema.find();
             res.json(presentations);
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ error: error.message });
             console.log(error)
         }
     },
@@ -19,7 +19,7 @@ exports.presentationController = {
             if (!presentation) return
             res.status(200).json(presentation);
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ error: error.message });
             console.log(error)
         }
     },
@@ -38,9 +38,9 @@ exports.presentationController = {
         });
         try {
             const newPresentation = await presentation.save();
-            res.status(200).json(newPresentation);
+            res.status(200).json(newPresentation._id);
         } catch (error) {
-            res.status(400).json({ message: error.message });
+            res.status(400).json({ error: error.message });
             console.log(error)
         }
     },
@@ -54,7 +54,7 @@ exports.presentationController = {
             await presentation.save();
             res.status(200).json({message: 'Slide is created'});
         } catch (error) {
-            res.status(400).json({ message: error.message });
+            res.status(400).json({ error: error.message });
             console.log(error)
         }
     },
@@ -74,7 +74,7 @@ exports.presentationController = {
             await presentation.save();
             res.status(200).json({message: 'Slide is edited'});
         } catch (error) {
-            res.status(400).json({ message: error.message });
+            res.status(400).json({ error: error.message });
             console.log(error)
         }
     },
@@ -94,7 +94,7 @@ exports.presentationController = {
             await presentation.save();
             res.status(200).json({message: 'Slide is deleted'});
         } catch (error) {
-            res.status(400).json({ message: error.message });
+            res.status(400).json({ error: error.message });
             console.log(error)
         }
     },
@@ -107,7 +107,7 @@ exports.presentationController = {
             await PresentationSchema.findByIdAndDelete(presentationId);
             res.status(200).json({message: 'Presentation is deleted'});
         } catch (error) {
-            res.status(500).json({ message: error.message });
+            res.status(500).json({ error: error.message });
             console.log(error)
         }
     },
@@ -124,7 +124,7 @@ exports.presentationController = {
             await presentation.save()
             res.status(200).json({message: 'User is added to black list'});
         } catch (error) {
-            res.status(400).json({ message: error.message });
+            res.status(400).json({ error: error.message });
             console.log(error)
         }
     },
@@ -140,7 +140,7 @@ exports.presentationController = {
             await presentation.save()
             res.status(200).json({message: 'User is removed from black list'});
         } catch (error) {
-            res.status(400).json({ message: error.message });
+            res.status(400).json({ error: error.message });
             console.log(error)
         }
     },
@@ -156,7 +156,7 @@ exports.presentationController = {
             await presentation.save()
             res.status(200).json({message: 'Presentation editability is changed'});
         } catch (error) {
-            res.status(400).json({ message: error.message });
+            res.status(400).json({ error: error.message });
             console.log(error)
         }
     }

@@ -1,13 +1,17 @@
 import React, {useEffect, useState} from 'react';
 import EditorBlock from "./EditorBlock.jsx";
-import {useDispatch} from "react-redux";
+import {useDispatch, useSelector} from "react-redux";
 import {editPresentationSlide} from "../store/features/PresentationSlice.js";
 import SlidePreview from "./SlidePreview.jsx";
 
 const SlideEditor = ({presentation, selectedSlide, socket, handlegetPresentationByIdForSocket}) => {
     const dispatch = useDispatch()
+
+    let allowedEdit = useSelector(state=>state.presentation.allowedToEdit)
+
     const [slideContent, setSlideContent] = useState(null);
     const [editMode, setEditMode] = useState(false)
+
 
     useEffect(() => {
         setEditMode(false)
@@ -42,11 +46,11 @@ const SlideEditor = ({presentation, selectedSlide, socket, handlegetPresentation
             <div className="flex justify-between gap-x-4">
                 <h2 className="text-lg font-bold mb-4">Presentation Title: {presentation.title}</h2>
 
-                {!editMode
+                {presentation?.slides.length&&allowedEdit&& ( !editMode
                     ?
-                    <button
+                        <button
                             onClick={handleStartEditingMode}>Start Editing
-                    </button>
+                        </button>
                     :
                     <div>
                         <button
@@ -58,11 +62,11 @@ const SlideEditor = ({presentation, selectedSlide, socket, handlegetPresentation
                         </button>
                     </div>
 
-                }
+                    ) }
             </div>
 
             {
-                presentation?.slides?.length ?
+                presentation?.slides.length ?
                     <p className="text-sm text-gray-600">Slide {selectedSlide + 1} of {presentation.slides.length}</p>
                     :
                     <p className="text-sm text-gray-600">No slides available</p>
@@ -72,11 +76,12 @@ const SlideEditor = ({presentation, selectedSlide, socket, handlegetPresentation
                 presentation?.slides.length &&
                 <>
                     {editMode ?
+                        allowedEdit?(
                         <EditorBlock
                             presentation={presentation}
                             selectedSlide={selectedSlide}
                             setSlideContent={setSlideContent}
-                        />
+                        />):null
                      :
                         presentation?.slides[selectedSlide] &&
                         <div className='h-[300px]'>
@@ -85,7 +90,6 @@ const SlideEditor = ({presentation, selectedSlide, socket, handlegetPresentation
 
                     }
                 </>
-
             }
         </div>
     );

@@ -30,7 +30,7 @@ const Header = () => {
     return (
         <div>
             <header className="bg-primary mb-8">
-                <div className='container mx-auto text-white p-4 flex justify-between items-center'>
+                <div className='container mx-auto text-white py-4 flex justify-between items-center'>
                     <Link className="text-2xl" to='/'>Presentations</Link>
                     <div className="flex items-center">
                         <span className="text-2xl mr-4">{user}</span>

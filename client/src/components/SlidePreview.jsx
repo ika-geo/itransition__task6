@@ -20,7 +20,7 @@ const SlidePreview = ({ slideData }) => {
         generatePreview();
     }, [slideData]);
 
-    if (!previewImage) return null
+    if (!previewImage) return <h1 className="text-center text-2xl font-bold">No data added</h1>
 
     return (
         <div className="h-full max-h-[100%]">

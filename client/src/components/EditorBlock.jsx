@@ -4,13 +4,12 @@ import debounce from 'lodash.debounce';
 
 const EditorBlock = ({ presentation, selectedSlide, slideContent, setSlideContent }) => {
 
-    // Debounced function to limit how often state updates
     const debouncedSetSlideContent = useCallback(
         debounce((newContent) => {
             if (JSON.stringify(slideContent) !== JSON.stringify(newContent)) {
                 setSlideContent(newContent);
             }
-        }, 300), // Adjust delay as needed
+        }, 300),
         [slideContent, setSlideContent]
     );
 

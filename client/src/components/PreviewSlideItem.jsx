@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from "react-router-dom";
 import {useDispatch, useSelector} from "react-redux";
-import {deletePresentation} from "../store/features/PresentationSlice.js";
+import {deletePresentation, deletePresentationLocally} from "../store/features/PresentationSlice.js";
 import SlidePreview from "./SlidePreview.jsx";
 
 
@@ -11,6 +11,7 @@ const PreviewSlideItem = ({presentation}) => {
     let dispatch = useDispatch()
 
     const handleDeletePresentation = ()=>{
+        dispatch(deletePresentationLocally(presentation._id))
         dispatch(deletePresentation(presentation._id))
     }
 
@@ -22,7 +23,7 @@ const PreviewSlideItem = ({presentation}) => {
                 />
             </div>
 
-            <div className='flex justify-between gap-x-2'>
+            <div className='flex justify-between items-start gap-x-2 min-h-12'>
                 <h3 className="text-xl font-bold">{presentation.title}</h3>
                 {
                     author === presentation.author &&

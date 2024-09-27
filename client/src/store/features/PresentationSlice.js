@@ -7,7 +7,8 @@ const initialState = {
     loading: false,
     selectedPresentation: null,
     selectedSlice: 0,
-    error: false
+    error: false,
+    allowedToEdit: false
 }
 
 let serverUrl = import.meta.env.VITE_SERVER_URL
@@ -49,14 +50,14 @@ export const createPresentaion = createAsyncThunk('presentation/createPresentaio
     }
 });
 
-export const addSlide = createAsyncThunk('presentation/addSlide', async (presentationId) => {
-    try {
-        const response = await axios.post(presentationUrl+"/"+presentationId);
-        return response.data
-    } catch (error) {
-        return error
-    }
-});
+// export const addSlide = createAsyncThunk('presentation/addSlide', async (presentationId) => {
+//     try {
+//         const response = await axios.post(presentationUrl+"/"+presentationId);
+//         return response.data
+//     } catch (error) {
+//         return error
+//     }
+// });
 
 export const deletePresentation = createAsyncThunk('presentation/deletePresentation', async (id) => {
     try {
@@ -67,14 +68,14 @@ export const deletePresentation = createAsyncThunk('presentation/deletePresentat
     }
 });
 
-export const deleteSlide = createAsyncThunk('presentation/deleteSlide', async (data) => {
-    try {
-        const response = await axios.delete(presentationUrl+"/deleteSlide/"+data.presentationId+"/"+data.slideId);
-        return response.data
-    } catch (error) {
-        return error
-    }
-});
+// export const deleteSlide = createAsyncThunk('presentation/deleteSlide', async (data) => {
+//     try {
+//         const response = await axios.delete(presentationUrl+"/deleteSlide/"+data.presentationId+"/"+data.slideId);
+//         return response.data
+//     } catch (error) {
+//         return error
+//     }
+// });
 
 
 export const PresentationSlice = createSlice({
@@ -86,12 +87,31 @@ export const PresentationSlice = createSlice({
         },
         editPresentationSlide: (state, action) => {
             state.selectedPresentation.slides[state.selectedSlice] = action.payload
+        },
+
+        deletePresentationLocally: (state, action) => {
+            state.presentations = state.presentations.filter(presentation => presentation._id!== action.payload)
+        },
+        deletePresentationSlideLocally: (state, action) => {
+            state.selectedPresentation.slides = state.selectedPresentation.slides.filter((slide, id) => id!== action.payload)
+        },
+        addPresentationSlideLocally: (state) => {
+            state.selectedPresentation.slides.push([])
+        },
+        addUserToBlackListLocally: (state, action)=>{
+            state.selectedPresentation.blackListUsers.push(action.payload)
+        },
+        removeUserFromBlackListLocally: (state, action)=>{
+            state.selectedPresentation.blackListUsers = state.selectedPresentation.blackListUsers.filter(user => user!== action.payload)
+        },
+        setAllowedToEdit: (state, action) => {
+            state.allowedToEdit = action.payload
         }
     },
 
+
     extraReducers: (builder) => {
         builder
-
             .addCase(getPresentations.pending, (state) => {
                 state.loading = true
             })
@@ -111,9 +131,14 @@ export const PresentationSlice = createSlice({
             })
             .addCase(getPresentationById.fulfilled, (state, action) => {
                 state.loading = false
+                if (!action?.payload?._id){
+                    state.error=true
+                    return handleErrorMessage(action, "Can't get presentation")
+                }
                 state.selectedPresentation = action.payload
             })
             .addCase(getPresentationById.rejected, (state, action) => {
+                console.log(action.payload)
                 state.loading = false
                 state.error = true
                 handleErrorMessage(action, "Can't get presentation")
@@ -126,14 +151,14 @@ export const PresentationSlice = createSlice({
                 handleErrorMessage(action, "Can't update presentation")
             })
 
-            .addCase(addSlide.rejected, (state, action) => {
-                handleErrorMessage(action, "Can't add slide")
-            })
-
-            .addCase(deleteSlide.rejected, (state, action) => {
-                console.log(action.payload)
-                handleErrorMessage(action, "Can't delete slide")
-            })
+            // .addCase(addSlide.rejected, (state, action) => {
+            //     handleErrorMessage(action, "Can't add slide")
+            // })
+            //
+            // .addCase(deleteSlide.rejected, (state, action) => {
+            //     console.log(action.payload)
+            //     handleErrorMessage(action, "Can't delete slide")
+            // })
 
             .addCase(createPresentaion.rejected, (state, action) => {
                 console.log(action.payload)
@@ -148,6 +173,15 @@ export const PresentationSlice = createSlice({
 
 })
 
-export const {setSelectedSlide, editPresentationSlide} = PresentationSlice.actions
+export const {
+    setSelectedSlide,
+    editPresentationSlide,
+    deletePresentationLocally,
+    deletePresentationSlideLocally,
+    addPresentationSlideLocally,
+    addUserToBlackListLocally,
+    removeUserFromBlackListLocally,
+    setAllowedToEdit
+} = PresentationSlice.actions
 
 export default PresentationSlice.reducer

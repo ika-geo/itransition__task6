@@ -1,6 +1,7 @@
 import React, {useState} from 'react';
 import {useDispatch, useSelector} from "react-redux";
 import {createPresentaion} from "../store/features/PresentationSlice.js";
+import {useNavigate} from "react-router-dom";
 
 
 const CreateNewPresentation = () => {
@@ -11,6 +12,8 @@ const CreateNewPresentation = () => {
     const [editMode, setEditMode] = useState(false)
     const [title, setTitle] = useState('')
     const [allowEdit, setAllowEdit] = useState(true)
+
+    const navigate = useNavigate()
 
     const handleOpenEditMode = () => {
         setEditMode(true)
@@ -28,14 +31,18 @@ const CreateNewPresentation = () => {
         setEditMode(false)
     }
 
-    const handleCreateNewPresentation = ()=>{
+    const handleCreateNewPresentation = async()=>{
         if (title){
-            handleCLoseEditBlock()
-            dispatch(createPresentaion({
+
+           await handleCLoseEditBlock()
+           let response = await dispatch(createPresentaion({
                 author,
                 title,
                 allowEdit
             }))
+            if(response.payload){
+                navigate(`/presentation/${response.payload}`)
+            }
         }
     }
 

@@ -8,6 +8,7 @@ import CreateNewPresentation from "../components/CreateNewPresentation.jsx";
 const HomePage = () => {
     const dispatch = useDispatch()
     const presentations = useSelector(state => state.presentation.presentations)
+
     useEffect(() => {
         dispatch(getPresentations())
 
