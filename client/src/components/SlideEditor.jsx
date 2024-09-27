@@ -6,13 +6,9 @@ import SlidePreview from "./SlidePreview.jsx";
 
 const SlideEditor = ({presentation, selectedSlide, socket, handlegetPresentationByIdForSocket}) => {
     const dispatch = useDispatch()
-
     let allowedEdit = useSelector(state=>state.presentation.allowedToEdit)
-
     const [slideContent, setSlideContent] = useState(null);
     const [editMode, setEditMode] = useState(false)
-
-
     useEffect(() => {
         setEditMode(false)
     }, [selectedSlide]);

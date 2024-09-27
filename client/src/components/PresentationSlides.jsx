@@ -5,16 +5,21 @@ import {
     setSelectedSlide
 } from "../store/features/PresentationSlice.js";
 import {useDispatch, useSelector} from "react-redux";
+import {useNavigate} from "react-router-dom";
 
 const PresentationSlides = ({presentation, selectedSlide, socket, handlegetPresentationByIdForSocket}) => {
     const user = useSelector(state=>state.user.name)
     const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     useEffect(() => {
         if (socket){
             socket.on('refreshPresentation', handlegetPresentationByIdForSocket);
+            socket.on("deletePresentation", ()=>navigate('/'))
+
             return () => {
                 socket.off('refreshPresentation');
+                socket.off("deletePresentation");
             };
         }
     }, []);
@@ -37,8 +42,21 @@ const PresentationSlides = ({presentation, selectedSlide, socket, handlegetPrese
         }
     }
 
+    const handleDeletePresentaion = ()=>{
+        if (socket){
+            socket.emit("deletePresentation", presentation._id)
+            navigate('/')
+        }
+    }
+
     return (
         <>
+            {presentation?.author===user &&
+                <button
+                    onClick={handleDeletePresentaion}
+                    className='alterBtn mb-4'>Delete Presentation</button>
+            }
+
             {presentation.slides.map((slide, id) => {
                 return (
                     <div

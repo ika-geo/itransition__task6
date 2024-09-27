@@ -11,6 +11,8 @@ import SlideEditor from "../components/SlideEditor.jsx";
 import UsersInPresentation from "../components/UsersInPresentation.jsx";
 import io from "socket.io-client";
 import {getAllowedToEdit} from "../utils/getAllowedToEdit.js";
+import downloadExcalidrawAsPDF from "../store/features/downloadExcalidrawAsPDF.js";
+
 
 const PresentationPage = () => {
     const {id} = useParams();
@@ -40,6 +42,10 @@ const PresentationPage = () => {
         dispatch(getPresentationByIdForSocket(id))
     }
 
+    const handleDownloadPresentation = ()=>{
+        downloadExcalidrawAsPDF(presentation.slides)
+    }
+
     if (loading) return <div>Loading...</div>
     if (error) return <div>Can't get presentation</div>
     if (!presentation) return <h1>No presentation founded</h1>
@@ -66,7 +72,12 @@ const PresentationPage = () => {
                 />
             </div>
 
+
             <div className='w-1/5 p-2'>
+                <div>
+                    <button className='mb-4' onClick={handleDownloadPresentation}>Download PDF</button>
+                </div>
+
                 <UsersInPresentation
                     presentation={presentation}
                     socket={socket}

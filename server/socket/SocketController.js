@@ -44,6 +44,19 @@ exports.socketController = {
         }
     },
 
+    deletePresentation: async (presentationId)=>{
+        try{
+            let presentation = await PresentationSchema.findById(presentationId)
+            if(!presentation){
+                throw new Error("Presentation not found")
+            }
+            await presentation.remove()
+        }
+        catch(error){
+            console.log(error)
+        }
+    },
+
     deletePresentationSlide: async (presentationId, slideId) =>{
         try{
             let presentation = await PresentationSchema.findById(presentationId)

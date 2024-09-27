@@ -13,6 +13,11 @@ exports.setSocket = (io)=>{
             io.to(presentation_id).emit('refreshPresentation');
         });
 
+        socket.on('deletePresentation', async (presentationId) => {
+            await socketController.deletePresentation(presentationId)
+            io.to(presentationId).emit('deletePresentation');
+        });
+
         socket.on('deletePresentationSlide', async (presentationId) => {
             await socketController.deletePresentationSlide(presentationId)
             io.to(presentationId).emit('refreshPresentation');
