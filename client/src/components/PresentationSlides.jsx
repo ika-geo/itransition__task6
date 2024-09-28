@@ -28,10 +28,13 @@ const PresentationSlides = ({presentation, selectedSlide, socket, handlegetPrese
         dispatch(setSelectedSlide(id))
     }
 
-    const handleDeleteSlide = () => {
+    const handleDeleteSlide = (id) => {
         if (socket){
-            dispatch(deletePresentationSlideLocally(selectedSlide))
-            socket.emit("deletePresentationSlide", presentation._id, selectedSlide)
+            if (id===selectedSlide && id===presentation.slides.length-1){
+                dispatch(setSelectedSlide(0))
+            }
+            dispatch(deletePresentationSlideLocally(id))
+            socket.emit("deletePresentationSlide", presentation._id, id)
         }
     }
 
@@ -62,14 +65,13 @@ const PresentationSlides = ({presentation, selectedSlide, socket, handlegetPrese
                     <div
                         key={slide._id}
                         className={'text-black w-full flex lg:flex-row flex-col items-center gap-x-2 p-4 mb-4 rounded-lg shadow-md border-[1px] border-gray-100 ' + (selectedSlide === id ? "bg-primaryBG" : "")}>
-
                         <button
                             onClick={() => handleChangeSlide(id)}
                             className='bg-transparent w-full text-black lg:mb-0 mb-1'>
                             Slide {id + 1}</button>
 
                         {user===presentation.author &&
-                            <button onClick={() => handleDeleteSlide(slide._id, id)}
+                            <button onClick={() => handleDeleteSlide(id)}
                                     className='alterBtn'>Delete
                             </button>
                         }
