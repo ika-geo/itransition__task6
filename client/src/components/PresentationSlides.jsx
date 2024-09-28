@@ -54,18 +54,18 @@ const PresentationSlides = ({presentation, selectedSlide, socket, handlegetPrese
             {presentation?.author===user &&
                 <button
                     onClick={handleDeletePresentaion}
-                    className='alterBtn mb-4'>Delete Presentation</button>
+                    className='alterBtn block mb-4'>Delete Presentation</button>
             }
 
             {presentation.slides.map((slide, id) => {
                 return (
                     <div
                         key={slide._id}
-                        className={'text-black w-full flex justify-between gap-x-2 p-4 mb-4 rounded-lg shadow-md border-[1px] border-gray-100 ' + (selectedSlide === id ? "bg-primaryBG" : "")}>
+                        className={'text-black w-full flex lg:flex-row flex-col items-center gap-x-2 p-4 mb-4 rounded-lg shadow-md border-[1px] border-gray-100 ' + (selectedSlide === id ? "bg-primaryBG" : "")}>
 
                         <button
                             onClick={() => handleChangeSlide(id)}
-                            className='bg-transparent w-full text-black'>
+                            className='bg-transparent w-full text-black lg:mb-0 mb-1'>
                             Slide {id + 1}</button>
 
                         {user===presentation.author &&

@@ -8,11 +8,15 @@ import CreateNewPresentation from "../components/CreateNewPresentation.jsx";
 const HomePage = () => {
     const dispatch = useDispatch()
     const presentations = useSelector(state => state.presentation.presentations)
+    const loading = useSelector(state=>state.presentation.loading)
 
     useEffect(() => {
         dispatch(getPresentations())
 
     }, []);
+
+    if (loading) return <h1>Loading...</h1>
+
     return (
         <div>
             <div className="mb-6">

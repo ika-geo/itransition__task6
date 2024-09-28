@@ -50,15 +50,6 @@ export const createPresentaion = createAsyncThunk('presentation/createPresentaio
     }
 });
 
-// export const addSlide = createAsyncThunk('presentation/addSlide', async (presentationId) => {
-//     try {
-//         const response = await axios.post(presentationUrl+"/"+presentationId);
-//         return response.data
-//     } catch (error) {
-//         return error
-//     }
-// });
-
 export const deletePresentation = createAsyncThunk('presentation/deletePresentation', async (id) => {
     try {
         const response =  await axios.delete(presentationUrl+"/"+id);
@@ -67,16 +58,6 @@ export const deletePresentation = createAsyncThunk('presentation/deletePresentat
         return error
     }
 });
-
-// export const deleteSlide = createAsyncThunk('presentation/deleteSlide', async (data) => {
-//     try {
-//         const response = await axios.delete(presentationUrl+"/deleteSlide/"+data.presentationId+"/"+data.slideId);
-//         return response.data
-//     } catch (error) {
-//         return error
-//     }
-// });
-
 
 export const PresentationSlice = createSlice({
     name: 'presentation',
@@ -150,15 +131,6 @@ export const PresentationSlice = createSlice({
             .addCase(getPresentationByIdForSocket.rejected, (state, action) => {
                 handleErrorMessage(action, "Can't update presentation")
             })
-
-            // .addCase(addSlide.rejected, (state, action) => {
-            //     handleErrorMessage(action, "Can't add slide")
-            // })
-            //
-            // .addCase(deleteSlide.rejected, (state, action) => {
-            //     console.log(action.payload)
-            //     handleErrorMessage(action, "Can't delete slide")
-            // })
 
             .addCase(createPresentaion.rejected, (state, action) => {
                 console.log(action.payload)

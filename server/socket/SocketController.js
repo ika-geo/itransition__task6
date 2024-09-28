@@ -46,11 +46,10 @@ exports.socketController = {
 
     deletePresentation: async (presentationId)=>{
         try{
-            let presentation = await PresentationSchema.findById(presentationId)
+            let presentation = await PresentationSchema.findByIdAndDelete(presentationId)
             if(!presentation){
                 throw new Error("Presentation not found")
             }
-            await presentation.remove()
         }
         catch(error){
             console.log(error)
